@@ -193,7 +193,8 @@ and 15--19 to test (2{,}062 / 45{,}430).
 
 The backbone has to make the question we are asking answerable, so two
 requirements disqualify outright and the properties that decide among what
-survives are measured on these corpora, not taken from model cards. We select
+survives are measured on these corpora, not taken from model cards. We select as
+our backbone $\theta_0$ the model
 \tec{BSC-LT/salamandra-2b} \cite{salamandra2025}, a 2.25B multilingual decoder
 trained on 35 European languages.
 
@@ -234,10 +235,12 @@ input and output embedding matrices, which we do not adapt.
 \label{sec:modules}
 
 Each module is trained on the whole of its corpus, one pass, with no data shared
-between them and none from the target: 696{,}334 segments and 11{,}135{,}049
-words of legal Swedish for $\tau_L$ (2{,}520 optimisation steps), and
-2{,}483{,}074 segments and 48{,}601{,}840 words of literary non-Swedish for
-$\tau_G$ (9{,}810 steps). Both learn what they were given
+between them and none from the target: the language module $\tau_L$ on 696{,}334
+segments and 11{,}135{,}049 words of legal Swedish (2{,}520 optimisation steps),
+and the genre module $\tau_G$ on 2{,}483{,}074 segments and 48{,}601{,}840 words
+of literary non-Swedish (9{,}810 steps). We write $\tau$ for a module and
+$\Delta W$ for the displacement it applies to a given matrix, so that
+$\tau_L+\tau_G$ and $\Delta W_L+\Delta W_G$ name the same system. Both learn what they were given
 (Table~\ref{tab:modulos}), which is the premise everything below rests on: a
 module that had learned nothing would make the composition question empty.
 
@@ -335,12 +338,13 @@ explains nothing.
 We instead remove from the genre module the component the language module
 already writes:
 \begin{equation}
-\theta_0 \;+\; \Delta W_L \;+\; \bigl(I - U_L U_L^{\top}\bigr)\,\Delta W_G .
+\theta_0 \;+\; \Delta W_L \;+\; P_L^{\perp}\,\Delta W_G ,
+\qquad P_L^{\perp} = I - U_L U_L^{\top}.
 \end{equation}
 It has no free parameters, since $U_L$ comes from weights we already have; it is
-self-targeting, because where the subspaces are orthogonal the projection is
+self-targeting, because where the subspaces are orthogonal $P_L^{\perp}$ is
 nearly the identity, so we never choose which matrices to apply it to; and it
-stays in the family, since $(I-U_LU_L^{\top})\Delta W_G = s(P^{\perp}B_G)A_G$ is
+stays in the family, since $P_L^{\perp}\Delta W_G = s(P_L^{\perp}B_G)A_G$ is
 still a rank-$r$ LoRA adapter, merged and served at identical cost. It is
 asymmetric --- which module stays intact is a real choice --- so we evaluate
 both orders. Because it acts on \emph{where} the modules write rather than on
@@ -447,8 +451,8 @@ $\tau_L$ language only     & 1.1282 & $+0.0237$ & 24.31 & $[+0.022,+0.026]$ \\
 $\tau_G$ genre only        & 1.1279 & $+0.0234$ & 24.29 & $[+0.017,+0.027]$ \\
 sum $\tau_L+\tau_G$        & 1.1424 & $+0.0379$ & 25.30 & $[+0.032,+0.041]$ \\
 mean $\frac12(\tau_L+\tau_G)$ & 1.0942 & $-0.0104$ & 22.08 & $[-0.015,-0.008]$ \\
-proj $\tau_L+P^{\perp}\tau_G$ & 1.1411 & $+0.0366$ & 25.21 & $[+0.031,+0.039]$ \\
-proj $\tau_G+P^{\perp}\tau_L$ & 1.1415 & $+0.0370$ & 25.24 & $[+0.032,+0.040]$ \\
+proj $\tau_L+P_L^{\perp}\tau_G$ & 1.1411 & $+0.0366$ & 25.21 & $[+0.031,+0.039]$ \\
+proj $\tau_G+P_G^{\perp}\tau_L$ & 1.1415 & $+0.0370$ & 25.24 & $[+0.032,+0.040]$ \\
 \bottomrule
 \end{tabular}
 \caption{Zero-shot composition on the target test split. $\Delta$ is against the
@@ -508,8 +512,9 @@ account, and that is what we got.
 
 \paragraph{Most of the gain is one module at a fitted scale; the second is
 separable.} Table~\ref{tab:sup} is the comparison that decides what the paper
-may claim, and it is not the one usually made. Against the \emph{unscaled} genre
-module the composition wins by $-0.039$ --- but a genre module scaled the same
+may claim, and it is not the one usually made. From here on \emph{the
+composition} means the two-scalar row, $\theta_0+0.3\,\Delta W_L+0.3\,\Delta
+W_G$. Against the \emph{unscaled} genre module it wins by $-0.039$ --- but a genre module scaled the same
 way, one parameter fitted on the same split, already recovers $-0.0118$. Adding
 the language module on top is worth a further $-0.0041$, with the same sign in
 all five chapters ($-0.0045$, $-0.0052$, $-0.0037$, $-0.0039$, $-0.0034$) and an
@@ -614,7 +619,7 @@ comparisons across groups carry a bias we have not bounded.
 \addplot[black, thick, mark=*, mark size=1.3pt] coordinates {
  (31,-0.0675) (94,-0.0255) (157,-0.0174) (220,-0.0120)
  (283,-0.0086) (346,-0.0077) (409,-0.0082) (472,-0.0043)};
-\addlegendentry{composition}
+\addlegendentry{composition $(0.3,0.3)$}
 \addplot[black!55, thick, dashed, mark=square, mark size=1.3pt,
          mark options={solid}] coordinates {
  (31,0.0102) (94,0.0202) (157,0.0217) (220,0.0280)
@@ -681,10 +686,11 @@ is $+0.132$, against a scale of $1/\sqrt{2048}=0.022$ for a single random cosine
 in the width of the residual stream: six times larger, and far outside what
 sampling noise could produce. So the two modules push the activations in substantially the same
 direction while writing into near-orthogonal weight coordinates. That alignment
-implies a scale. The projection of $\lambda(\delta_L+\delta_G)$ onto $\delta_L$
-is $\lambda\lVert\delta\rVert(1+c)$, so the $\lambda$ that keeps the shared part
-from being counted twice --- the one the double-counting account calls for --- is
-$1/(1+c)$, here $0.88$. The fitted optimum is $(0.3,0.3)$: over $c\in[0,1]$ the
+implies a scale. Taking the two displacements to have the same norm
+$\lVert\delta\rVert$, the projection of $\lambda(\delta_L+\delta_G)$ onto
+$\delta_L$ is $\lambda\lVert\delta\rVert(1+c)$, so the $\lambda$ that keeps the
+shared part from being counted twice --- the one the double-counting account
+calls for --- is $1/(1+c)$, here $0.88$. The fitted optimum is $(0.3,0.3)$: over $c\in[0,1]$ the
 predicted scale never falls below one half, and reaching three tenths would need
 $c=2.33$. Whatever forces $\lambda$ down is not the double-counting the
 geometric account posits.
