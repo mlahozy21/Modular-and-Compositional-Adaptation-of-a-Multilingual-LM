@@ -287,10 +287,11 @@ measures whether they are.
 
 \subsection{What the two modules share}
 
-For each adapted matrix we take orthonormal bases of the two modules' column
-spaces --- the output directions each one writes into --- and compute the
+A module adds $sB(Ax)$ to the output at input $x$, a combination of the columns
+of $B$: everything it can write lives in that column space. So we take
+orthonormal bases $U_L$ and $U_G$ of the two column spaces and compute the
 singular values of $U_L^{\top}U_G$, the cosines of the principal angles between
-them. The control matters here: two \emph{random} rank-$r$ subspaces of the same
+them --- $1$ where the two subspaces coincide, $0$ where they are orthogonal. The control matters here: two \emph{random} rank-$r$ subspaces of the same
 dimension already share about $\sqrt{r/d}$ of a cosine, so we report everything
 as a multiple of that chance level rather than as a raw overlap.
 
@@ -328,9 +329,7 @@ Where the two modules are orthogonal, summing is free: each writes directions
 the other does not touch. Where they are aligned, summing writes the same
 displacement twice, which is the mechanism behind the familiar observation that
 the best interpolation weight for merged models sits below one
-\cite{wortsman2022,ilharco2023}. Stacking instead of adding, as in MAD-X \cite{pfeiffer2020}, is not
-open to us: it trains the second module on top of the first, and the task
-requires them independent. The standard response within weight space is to tune
+\cite{wortsman2022,ilharco2023}. The standard response within weight space is to tune
 $\lambda$, but $\lambda$ has to be fitted on target data, which the zero-shot
 setting forbids; it applies uniformly to matrices that do not need it; and it
 explains nothing.
@@ -341,6 +340,8 @@ already writes:
 \theta_0 \;+\; \Delta W_L \;+\; P_L^{\perp}\,\Delta W_G ,
 \qquad P_L^{\perp} = I - U_L U_L^{\top}.
 \end{equation}
+Here $U_LU_L^{\top}$ projects onto the directions $\tau_L$ writes into, so
+$P_L^{\perp}$ keeps only what is left over for $\tau_G$.
 It has no free parameters, since $U_L$ comes from weights we already have; it is
 self-targeting, because where the subspaces are orthogonal $P_L^{\perp}$ is
 nearly the identity, so we never choose which matrices to apply it to; and it
@@ -696,10 +697,14 @@ $c=2.33$. Whatever forces $\lambda$ down is not the double-counting the
 geometric account posits.
 
 \paragraph{The confound is a measurable direction --- and it is the only thing
-the axes see.} We build two axes from backbone centroids with a single factor
-varying: genre as \emph{sv literary} $-$ \emph{sv legal} (positive $=$ more
-literary), language as \emph{non-sv literary} $-$ \emph{sv literary} (positive
-$=$ less Swedish). Decomposing each module's displacement in that plane,
+the axes see.} We build two axes from backbone centroids --- mean hidden states
+over a set of text --- that differ in one factor at a time: genre as \emph{sv
+literary} $-$ \emph{sv legal} (positive $=$ more literary), language as
+\emph{non-sv literary} $-$ \emph{sv literary} (positive $=$ less Swedish).
+Holding the other factor fixed is what makes each difference a direction for its
+own. The two share the sv-literary centroid with opposite signs and are
+therefore not orthogonal, so displacements are fitted onto the plane by least
+squares rather than projected axis by axis. Decomposed that way,
 $\tau_L$ has a clearly negative genre coefficient ($-0.084$) --- it drags the
 target towards the \emph{legal} pole, its confound --- and $\tau_G$ a clearly
 positive language coefficient ($+0.048$), dragging it towards
@@ -774,9 +779,6 @@ Editing models with task arithmetic. \emph{ICLR}.
 Translation Evaluation. \emph{EMNLP}.
 \bibitem{martins2024} P. H. Martins, P. Fernandes, J. Alves, et al. 2024.
 EuroLLM: Multilingual Language Models for Europe. arXiv:2409.16235.
-\bibitem{pfeiffer2020} J. Pfeiffer, I. Vuli\'c, I. Gurevych, S. Ruder. 2020.
-MAD-X: An Adapter-Based Framework for Multi-Task Cross-Lingual Transfer.
-\emph{EMNLP}.
 \bibitem{qwen3} Qwen Team. 2025. Qwen3 Technical Report. arXiv:2505.09388.
 \bibitem{wortsman2022} M. Wortsman, G. Ilharco, S. Y. Gadre, et al. 2022. Model
 soups: averaging weights of multiple fine-tuned models improves accuracy without
