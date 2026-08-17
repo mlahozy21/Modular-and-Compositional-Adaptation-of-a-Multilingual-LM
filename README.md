@@ -13,8 +13,8 @@ for a language factor and a genre factor, on the cell ⟨Swedish, literary⟩.
 **The headline.** Neither module helps the target on its own — each costs about
 `+0.023` bpb and their plain sum costs `+0.038`. Averaged, they help: `−0.010`
 bpb with no target data at all, in all five test chapters. One fitted scalar per
-module takes that to `−0.016`, of which the genre factor at a fitted scale
-accounts for roughly seven tenths and the language factor for the rest. What
+module takes that to `−0.016`, of which the genre module at a fitted scale
+accounts for roughly seven tenths and the language module for the rest. What
 governs the composition is the **magnitude** of the two updates and not their
 **direction**: three probes across two different spaces recover at most a tenth
 of what scaling delivers.
@@ -156,7 +156,7 @@ chapter differences, so those are quoted alongside it.
 | two fitted scalars, Table 4 | 11 |
 | per-layer depth profile, Figure 1 | 12 |
 | the scaled single-module control, the 30/70 split | 13 |
-| per-token profile (§8.1) | 14 |
+| per-token profile and Figure 2 (§8.1) | 14 |
 | activation alignment, axis projections (§8.2) | 15 |
 | confound axes and the intervention (§8.2) | 16 |
 
