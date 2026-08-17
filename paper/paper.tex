@@ -378,12 +378,12 @@ refined to $0.1$ in the $3\times3$ neighbourhood of the winner, scored on the
 consulted for the choice.
 
 We also fit a per-layer variant, $\lambda_L[\ell],\lambda_G[\ell]$ for each of
-the 24 layers --- 48 scalars, which does require gradient descent. It is
-initialised at the global optimum, so the two are nested and any gain is
-attributable to depth alone. The budget is fixed in advance rather than chosen
-by a stopping rule --- $\min(150,\max(30,3N/16))$ steps for $N$ training blocks,
-here 68 --- and validation and test are read only once it has run out, so
-nothing in the fit can have consulted them. These per-layer $\lambda$, unlike the
+the 24 layers --- 48 scalars, which does require gradient descent. The two-scalar
+model is the special case $\lambda_L[\ell]=\lambda_L$, $\lambda_G[\ell]=\lambda_G$,
+so the per-layer fit starts from it and departs only where depth pays: whatever
+it gains is what letting $\lambda$ vary with depth is worth, and not an artefact
+of where the optimiser began. The step budget is fixed in advance, and validation
+and test are read only once it has run out. These per-layer $\lambda$, unlike the
 global grid, are left unconstrained: since $\tau_L$ hurts the target on its own,
 a layer that wants $\lambda_L<0$ is a result, and a $[0,1]$ box would have hidden
 it. The grid's own optimum falls in the interior of that box, so its bound is
@@ -520,7 +520,7 @@ way, one parameter fitted on the same split, already recovers $-0.0118$. Adding
 the language module on top is worth a further $-0.0041$, with the same sign in
 all five chapters ($-0.0045$, $-0.0052$, $-0.0037$, $-0.0039$, $-0.0034$) and an
 interval of $[-0.0045,-0.0036]$ which, with five clusters, is essentially the
-range of those five numbers. What that contrast separates is two \emph{mixtures},
+range of those five numbers. What that figure separates is two \emph{mixtures},
 not a clean language factor and a clean genre factor: by
 Section~\ref{sec:interp} each module moves the target along its confound's axis,
 so both sides of the split are contaminated. Two scalars do not overfit: fitting them leaves the
