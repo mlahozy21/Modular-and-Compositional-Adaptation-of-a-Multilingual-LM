@@ -1,0 +1,83 @@
+{
+ "cell": "sv × literary",
+ "language_module": {
+  "file": "sv_lang_legal.jsonl.gz",
+  "definition": "column sv of pair hr-sv of opus_dgt, all rows, no deduplication",
+  "segments": 696334,
+  "words": 11135049,
+  "characters": 80454734,
+  "sha256": "d425e005818f4f09",
+  "mb": 20.7
+ },
+ "genre_module": {
+  "file": "genre_lit_sin_sv.jsonl.gz",
+  "definition": "all columns of the opus_books pairs that do NOT contain sv, all rows, no deduplication",
+  "segments": 2483074,
+  "words": 48601840,
+  "characters": 290153008,
+  "sha256": "2bec9be4377f5ec8",
+  "mb": 124.7,
+  "by_language": {
+   "en": {
+    "segments": 516484,
+    "words": 11040385
+   },
+   "fr": {
+    "segments": 384462,
+    "words": 7833960
+   },
+   "hu": {
+    "segments": 475718,
+    "words": 7712731
+   },
+   "es": {
+    "segments": 345052,
+    "words": 7008693
+   },
+   "de": {
+    "segments": 232975,
+    "words": 4875359
+   },
+   "nl": {
+    "segments": 176654,
+    "words": 3657410
+   },
+   "it": {
+    "segments": 157103,
+    "words": 3375669
+   },
+   "ru": {
+    "segments": 103892,
+    "words": 1635987
+   },
+   "ca": {
+    "segments": 17842,
+    "words": 290158
+   },
+   "no": {
+    "segments": 17357,
+    "words": 276640
+   },
+   "fi": {
+    "segments": 20258,
+    "words": 254346
+   },
+   "eo": {
+    "segments": 10538,
+    "words": 203029
+   },
+   "pt": {
+    "segments": 8702,
+    "words": 175428
+   },
+   "pl": {
+    "segments": 11329,
+    "words": 141467
+   },
+   "el": {
+    "segments": 4708,
+    "words": 120578
+   }
+  }
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "cell": "fi × literary",
+ "language_module": {
+  "file": "fi_lang_legal.jsonl.gz",
+  "definition": "column fi of pair fi-ga of opus_dgt, all rows, no deduplication",
+  "segments": 178619,
+  "words": 2852186,
+  "characters": 26923244,
+  "sha256": "af6cfd8dfea82770",
+  "mb": 6.9
+ },
+ "genre_module": {
+  "file": "genre_lit_sin_fi.jsonl.gz",
+  "definition": "all columns of the opus_books pairs that do NOT contain fi, all rows, no deduplication",
+  "segments": 2460748,
+  "words": 48432498,
+  "characters": 288637732,
+  "sha256": "ee4c70d8ed81ec3e",
+  "mb": 124.0,
+  "by_language": {
+   "en": {
+    "segments": 515934,
+    "words": 11048515
+   },
+   "fr": {
+    "segments": 383927,
+    "words": 7842748
+   },
+   "hu": {
+    "segments": 472214,
+    "words": 7665387
+   },
+   "es": {
+    "segments": 341708,
+    "words": 6952596
+   },
+   "de": {
+    "segments": 232975,
+    "words": 4875359
+   },
+   "nl": {
+    "segments": 176654,
+    "words": 3657410
+   },
+   "it": {
+    "segments": 160101,
+    "words": 3437673
+   },
+   "ru": {
+    "segments": 103892,
+    "words": 1635987
+   },
+   "ca": {
+    "segments": 17842,
+    "words": 290158
+   },
+   "no": {
+    "segments": 13943,
+    "words": 221933
+   },
+   "eo": {
+    "segments": 10538,
+    "words": 203029
+   },
+   "sv": {
+    "segments": 9095,
+    "words": 199605
+   },
+   "pt": {
+    "segments": 8702,
+    "words": 175428
+   },
+   "el": {
+    "segments": 4708,
+    "words": 120578
+   },
+   "pl": {
+    "segments": 8515,
+    "words": 106092
+   }
+  }
+ }
+}

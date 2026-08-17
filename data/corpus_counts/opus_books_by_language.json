@@ -1,0 +1,552 @@
+{
+ "pairs": 64,
+ "corpus_rows": 1250632,
+ "by_language": {
+  "en": {
+   "pairs": [
+    "ca-en",
+    "de-en",
+    "el-en",
+    "en-eo",
+    "en-es",
+    "en-fi",
+    "en-fr",
+    "en-hu",
+    "en-it",
+    "en-nl",
+    "en-no",
+    "en-pl",
+    "en-pt",
+    "en-ru",
+    "en-sv"
+   ],
+   "n_pares": 15,
+   "rows": 519579,
+   "words": 11107620,
+   "characters": 61073964,
+   "bytes": 61224441,
+   "filas_vacias": 0
+  },
+  "fr": {
+   "pairs": [
+    "de-fr",
+    "el-fr",
+    "en-fr",
+    "eo-fr",
+    "es-fr",
+    "fi-fr",
+    "fr-hu",
+    "fr-it",
+    "fr-nl",
+    "fr-no",
+    "fr-pl",
+    "fr-pt",
+    "fr-ru",
+    "fr-sv"
+   ],
+   "n_pares": 14,
+   "rows": 387464,
+   "words": 7900454,
+   "characters": 46251446,
+   "bytes": 47859719,
+   "filas_vacias": 0
+  },
+  "hu": {
+   "pairs": [
+    "ca-hu",
+    "de-hu",
+    "el-hu",
+    "en-hu",
+    "eo-hu",
+    "es-hu",
+    "fi-hu",
+    "fr-hu",
+    "hu-it",
+    "hu-nl",
+    "hu-no",
+    "hu-pl",
+    "hu-pt",
+    "hu-ru"
+   ],
+   "n_pares": 14,
+   "rows": 475718,
+   "words": 7712731,
+   "characters": 52010541,
+   "bytes": 56384035,
+   "filas_vacias": 0
+  },
+  "es": {
+   "pairs": [
+    "de-es",
+    "el-es",
+    "en-es",
+    "eo-es",
+    "es-fi",
+    "es-fr",
+    "es-hu",
+    "es-it",
+    "es-nl",
+    "es-no",
+    "es-pt",
+    "es-ru"
+   ],
+   "n_pares": 12,
+   "rows": 345052,
+   "words": 7008693,
+   "characters": 40271618,
+   "bytes": 41460640,
+   "filas_vacias": 0
+  },
+  "de": {
+   "pairs": [
+    "ca-de",
+    "de-en",
+    "de-eo",
+    "de-es",
+    "de-fr",
+    "de-hu",
+    "de-it",
+    "de-nl",
+    "de-pt",
+    "de-ru"
+   ],
+   "n_pares": 10,
+   "rows": 232975,
+   "words": 4875359,
+   "characters": 30706889,
+   "bytes": 31407721,
+   "filas_vacias": 0
+  },
+  "nl": {
+   "pairs": [
+    "ca-nl",
+    "de-nl",
+    "en-nl",
+    "es-nl",
+    "fr-nl",
+    "hu-nl",
+    "it-nl"
+   ],
+   "n_pares": 7,
+   "rows": 176654,
+   "words": 3657410,
+   "characters": 21873097,
+   "bytes": 22024565,
+   "filas_vacias": 0
+  },
+  "it": {
+   "pairs": [
+    "de-it",
+    "en-it",
+    "eo-it",
+    "es-it",
+    "fr-it",
+    "hu-it",
+    "it-nl",
+    "it-pt",
+    "it-ru",
+    "it-sv"
+   ],
+   "n_pares": 10,
+   "rows": 160101,
+   "words": 3437673,
+   "characters": 20236551,
+   "bytes": 20737372,
+   "filas_vacias": 0
+  },
+  "ru": {
+   "pairs": [
+    "de-ru",
+    "en-ru",
+    "es-ru",
+    "fr-ru",
+    "hu-ru",
+    "it-ru"
+   ],
+   "n_pares": 6,
+   "rows": 103892,
+   "words": 1635987,
+   "characters": 9947028,
+   "bytes": 17836135,
+   "filas_vacias": 0
+  },
+  "ca": {
+   "pairs": [
+    "ca-de",
+    "ca-en",
+    "ca-hu",
+    "ca-nl"
+   ],
+   "n_pares": 4,
+   "rows": 17842,
+   "words": 290158,
+   "characters": 1619655,
+   "bytes": 1647259,
+   "filas_vacias": 0
+  },
+  "no": {
+   "pairs": [
+    "en-no",
+    "es-no",
+    "fi-no",
+    "fr-no",
+    "hu-no"
+   ],
+   "n_pares": 5,
+   "rows": 17357,
+   "words": 276640,
+   "characters": 1501047,
+   "bytes": 1562294,
+   "filas_vacias": 0
+  },
+  "fi": {
+   "pairs": [
+    "en-fi",
+    "es-fi",
+    "fi-fr",
+    "fi-hu",
+    "fi-no",
+    "fi-pl"
+   ],
+   "n_pares": 6,
+   "rows": 20258,
+   "words": 254346,
+   "characters": 1920242,
+   "bytes": 2020889,
+   "filas_vacias": 0
+  },
+  "eo": {
+   "pairs": [
+    "de-eo",
+    "en-eo",
+    "eo-es",
+    "eo-fr",
+    "eo-hu",
+    "eo-it",
+    "eo-pt"
+   ],
+   "n_pares": 7,
+   "rows": 10538,
+   "words": 203029,
+   "characters": 1201757,
+   "bytes": 1238504,
+   "filas_vacias": 0
+  },
+  "sv": {
+   "pairs": [
+    "en-sv",
+    "fr-sv",
+    "it-sv"
+   ],
+   "n_pares": 3,
+   "rows": 9095,
+   "words": 199605,
+   "characters": 1111736,
+   "bytes": 1170788,
+   "filas_vacias": 0
+  },
+  "pt": {
+   "pairs": [
+    "de-pt",
+    "en-pt",
+    "eo-pt",
+    "es-pt",
+    "fr-pt",
+    "hu-pt",
+    "it-pt"
+   ],
+   "n_pares": 7,
+   "rows": 8702,
+   "words": 175428,
+   "characters": 1003576,
+   "bytes": 1024507,
+   "filas_vacias": 0
+  },
+  "pl": {
+   "pairs": [
+    "en-pl",
+    "fi-pl",
+    "fr-pl",
+    "hu-pl"
+   ],
+   "n_pares": 4,
+   "rows": 11329,
+   "words": 141467,
+   "characters": 899165,
+   "bytes": 963596,
+   "filas_vacias": 0
+  },
+  "el": {
+   "pairs": [
+    "el-en",
+    "el-es",
+    "el-fr",
+    "el-hu"
+   ],
+   "n_pares": 4,
+   "rows": 4708,
+   "words": 120578,
+   "characters": 733717,
+   "bytes": 1330016,
+   "filas_vacias": 0
+  }
+ },
+ "by_pair": {
+  "ca-de": {
+   "ca": 73259,
+   "de": 66349
+  },
+  "ca-en": {
+   "ca": 73463,
+   "en": 68625
+  },
+  "ca-hu": {
+   "ca": 72404,
+   "hu": 56380
+  },
+  "ca-nl": {
+   "ca": 71032,
+   "nl": 72093
+  },
+  "de-en": {
+   "de": 1097030,
+   "en": 1054718
+  },
+  "de-eo": {
+   "de": 31790,
+   "eo": 29056
+  },
+  "de-es": {
+   "de": 629762,
+   "es": 523682
+  },
+  "de-fr": {
+   "de": 717996,
+   "fr": 696691
+  },
+  "de-hu": {
+   "de": 1034434,
+   "hu": 826031
+  },
+  "de-it": {
+   "de": 638195,
+   "it": 534350
+  },
+  "de-nl": {
+   "de": 254077,
+   "nl": 272672
+  },
+  "de-pt": {
+   "de": 25169,
+   "pt": 24860
+  },
+  "de-ru": {
+   "de": 380557,
+   "ru": 280080
+  },
+  "el-en": {
+   "el": 30232,
+   "en": 35970
+  },
+  "el-es": {
+   "el": 29910,
+   "es": 31690
+  },
+  "el-fr": {
+   "el": 30235,
+   "fr": 31294
+  },
+  "el-hu": {
+   "el": 30201,
+   "hu": 25980
+  },
+  "en-eo": {
+   "en": 33250,
+   "eo": 29650
+  },
+  "en-es": {
+   "en": 2141773,
+   "es": 2031785
+  },
+  "en-fi": {
+   "en": 59105,
+   "fi": 43479
+  },
+  "en-fr": {
+   "en": 2715071,
+   "fr": 2642300
+  },
+  "en-hu": {
+   "en": 2845392,
+   "hu": 2348429
+  },
+  "en-it": {
+   "en": 770444,
+   "it": 710063
+  },
+  "en-nl": {
+   "en": 836924,
+   "nl": 831992
+  },
+  "en-no": {
+   "en": 56312,
+   "no": 54714
+  },
+  "en-pl": {
+   "en": 56195,
+   "pl": 35363
+  },
+  "en-pt": {
+   "en": 26245,
+   "pt": 25407
+  },
+  "en-ru": {
+   "en": 340361,
+   "ru": 280279
+  },
+  "en-sv": {
+   "en": 67235,
+   "sv": 66549
+  },
+  "eo-es": {
+   "eo": 30328,
+   "es": 33744
+  },
+  "eo-fr": {
+   "eo": 29870,
+   "fr": 35945
+  },
+  "eo-hu": {
+   "eo": 30094,
+   "hu": 25868
+  },
+  "eo-it": {
+   "eo": 30017,
+   "it": 30356
+  },
+  "eo-pt": {
+   "eo": 24014,
+   "pt": 25192
+  },
+  "es-fi": {
+   "es": 56097,
+   "fi": 41271
+  },
+  "es-fr": {
+   "es": 1100722,
+   "fr": 1140024
+  },
+  "es-hu": {
+   "es": 1495876,
+   "hu": 1250512
+  },
+  "es-it": {
+   "es": 611203,
+   "it": 621638
+  },
+  "es-nl": {
+   "es": 705436,
+   "nl": 719554
+  },
+  "es-no": {
+   "es": 59155,
+   "no": 57572
+  },
+  "es-pt": {
+   "es": 27210,
+   "pt": 25342
+  },
+  "es-ru": {
+   "es": 332093,
+   "ru": 279699
+  },
+  "fi-fr": {
+   "fi": 43432,
+   "fr": 57706
+  },
+  "fi-hu": {
+   "fi": 43479,
+   "hu": 47344
+  },
+  "fi-no": {
+   "fi": 41364,
+   "no": 54707
+  },
+  "fi-pl": {
+   "fi": 41321,
+   "pl": 35375
+  },
+  "fr-hu": {
+   "fr": 1737433,
+   "hu": 1388521
+  },
+  "fr-it": {
+   "fr": 396137,
+   "it": 358293
+  },
+  "fr-nl": {
+   "fr": 795028,
+   "nl": 798787
+  },
+  "fr-no": {
+   "fr": 54968,
+   "no": 54772
+  },
+  "fr-pl": {
+   "fr": 54920,
+   "pl": 35348
+  },
+  "fr-pt": {
+   "fr": 29046,
+   "pt": 24862
+  },
+  "fr-ru": {
+   "fr": 162468,
+   "ru": 117752
+  },
+  "fr-sv": {
+   "fr": 66494,
+   "sv": 66511
+  },
+  "hu-it": {
+   "hu": 557406,
+   "it": 650187
+  },
+  "hu-nl": {
+   "hu": 657372,
+   "nl": 861163
+  },
+  "hu-no": {
+   "hu": 45359,
+   "no": 54875
+  },
+  "hu-pl": {
+   "hu": 45078,
+   "pl": 35381
+  },
+  "hu-pt": {
+   "hu": 20589,
+   "pt": 24963
+  },
+  "hu-ru": {
+   "hu": 417862,
+   "ru": 398008
+  },
+  "it-nl": {
+   "it": 118389,
+   "nl": 101149
+  },
+  "it-pt": {
+   "it": 23725,
+   "pt": 24802
+  },
+  "it-ru": {
+   "it": 328668,
+   "ru": 280169
+  },
+  "it-sv": {
+   "it": 62004,
+   "sv": 66545
+  }
+ }
+}

@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# not redistributed: fetched from the Hub at run time
+raw/
+work/
+*.parquet
+
+# trained adapters, regenerated from the seed
+*.pt
+
+# LaTeX build products
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# os
+.DS_Store
+Thumbs.db

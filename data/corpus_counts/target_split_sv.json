@@ -1,0 +1,59 @@
+{
+ "train": {
+  "path": "sv_lit_train.jsonl.gz",
+  "segments": 5849,
+  "words": 128246,
+  "chapters": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12
+  ],
+  "sha256": "3dc99e9da29ded99804158d91f1c5d4380877de0532286acfd4fed68f1e77738"
+ },
+ "val": {
+  "path": "sv_lit_val.jsonl.gz",
+  "segments": 1184,
+  "words": 25929,
+  "chapters": [
+   13,
+   14
+  ],
+  "sha256": "75f71aa0d59a3720726c97e26ff92fc6cea9f54ed214c4518ca7125d26e32138"
+ },
+ "test": {
+  "path": "sv_lit_test.jsonl.gz",
+  "segments": 2062,
+  "words": 45430,
+  "chapters": [
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "sha256": "9f58fe913559023b82b8d1a079a9e1d7fdf5af87d3b87f0dda69246e741b5d0e"
+ },
+ "split": {
+  "criterion": "by chapter, contiguous",
+  "train": "cover + 1–12",
+  "val": "13–14",
+  "test": "15–19",
+  "work": "Tre män i en båt (Jerome K. Jerome)",
+  "pairs": [
+   "en-sv",
+   "fr-sv",
+   "it-sv"
+  ],
+  "total_palabras": 199605
+ }
+}

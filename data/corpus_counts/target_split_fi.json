@@ -1,0 +1,57 @@
+{
+ "train": {
+  "path": "fi_lit_train.jsonl.gz",
+  "segments": 12062,
+  "words": 152817,
+  "chapters": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "sha256": "f28c07a20a9f51e7161ee566e6b6f93fce89399bd383108d6fc240ea614bdc91"
+ },
+ "val": {
+  "path": "fi_lit_val.jsonl.gz",
+  "segments": 2872,
+  "words": 35146,
+  "chapters": [
+   10,
+   11
+  ],
+  "sha256": "b97a26b7b500a9186be1254e55b0898bc378b552bde8730571d01ccd199785be"
+ },
+ "test": {
+  "path": "fi_lit_test.jsonl.gz",
+  "segments": 5324,
+  "words": 66383,
+  "chapters": [
+   12,
+   13,
+   14,
+   15
+  ],
+  "sha256": "fa42ed813c7d428119c16bb0961127c2e0ece763da505097df655a879c61fa1d"
+ },
+ "split": {
+  "criterion": "by chapter, contiguous",
+  "train": "cover + 1–9",
+  "val": "10–11",
+  "test": "12–15",
+  "pairs": [
+   "en-fi",
+   "es-fi",
+   "fi-fr",
+   "fi-hu",
+   "fi-no",
+   "fi-pl"
+  ],
+  "total_words": 254346
+ }
+}

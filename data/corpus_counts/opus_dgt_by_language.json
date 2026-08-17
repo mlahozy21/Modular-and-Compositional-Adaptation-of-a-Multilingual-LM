@@ -1,0 +1,112 @@
+{
+ "sh": {
+  "pairs": [
+   "bg-sh",
+   "ga-sh",
+   "mt-sh"
+  ],
+  "n_pares": 3,
+  "rows": 3030544,
+  "words": 45587712,
+  "characters": 314363794,
+  "filas_vacias": 0
+ },
+ "bg": {
+  "pairs": [
+   "bg-ga",
+   "bg-hr",
+   "bg-sh"
+  ],
+  "n_pares": 3,
+  "rows": 2369221,
+  "words": 42672734,
+  "characters": 287630339,
+  "filas_vacias": 0
+ },
+ "hr": {
+  "pairs": [
+   "bg-hr",
+   "hr-sk",
+   "hr-sv"
+  ],
+  "n_pares": 3,
+  "rows": 2087169,
+  "words": 31529247,
+  "characters": 218333868,
+  "filas_vacias": 0
+ },
+ "mt": {
+  "pairs": [
+   "mt-sh"
+  ],
+  "n_pares": 1,
+  "rows": 1450424,
+  "words": 22060436,
+  "characters": 179677262,
+  "filas_vacias": 0
+ },
+ "ga": {
+  "pairs": [
+   "bg-ga",
+   "es-ga",
+   "fi-ga",
+   "ga-nl",
+   "ga-sh"
+  ],
+  "n_pares": 5,
+  "rows": 798714,
+  "words": 19671769,
+  "characters": 125891345,
+  "filas_vacias": 0
+ },
+ "sv": {
+  "pairs": [
+   "hr-sv"
+  ],
+  "n_pares": 1,
+  "rows": 696334,
+  "words": 11135049,
+  "characters": 80454734,
+  "filas_vacias": 0
+ },
+ "sk": {
+  "pairs": [
+   "hr-sk"
+  ],
+  "n_pares": 1,
+  "rows": 689263,
+  "words": 10932657,
+  "characters": 76536488,
+  "filas_vacias": 0
+ },
+ "es": {
+  "pairs": [
+   "es-ga"
+  ],
+  "n_pares": 1,
+  "rows": 178696,
+  "words": 4639024,
+  "characters": 29258771,
+  "filas_vacias": 0
+ },
+ "nl": {
+  "pairs": [
+   "ga-nl"
+  ],
+  "n_pares": 1,
+  "rows": 170644,
+  "words": 3932222,
+  "characters": 27291304,
+  "filas_vacias": 0
+ },
+ "fi": {
+  "pairs": [
+   "fi-ga"
+  ],
+  "n_pares": 1,
+  "rows": 178619,
+  "words": 2852186,
+  "characters": 26923244,
+  "filas_vacias": 0
+ }
+}

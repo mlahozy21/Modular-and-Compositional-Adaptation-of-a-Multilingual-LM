@@ -1,0 +1,34 @@
+# Version constraints for the study.
+#
+# HONEST STATUS: these are floors, not the resolved versions of the run reported
+# in the paper. That run installed with `pip install -U` and did not capture
+# what it resolved to, so pinning with `==` here would be an invented claim. To
+# turn this into a real lock file, run the notebook once and copy the versions
+# it now prints in section 2 (and records in elma_sild_sv.json), or run
+# `pip freeze > requirements.lock.txt` in the session that produced the results.
+#
+# Pinning matters here more than usual, because four things the code depends on
+# have moved between releases and three of them fail *silently*:
+#
+#   * `AutoModelForCausalLM.from_pretrained(..., dtype=...)` — this argument was
+#     `torch_dtype` in older transformers. Passing the wrong one loads the model
+#     in fp32 and everything still runs, four times slower and out of memory.
+#   * `PeftModel.unload()` vs `pm.base_model.unload()` — which one exists decides
+#     whether the backbone is actually restored between measurements. The
+#     notebook tries both and then verifies with `check_base()`, which is the
+#     reason that guard exists.
+#   * `mod.scaling["default"]` — the per-adapter scaling factor is read straight
+#     out of the LoRA layer to fold alpha/r into B. Its name and type have
+#     changed shape across peft versions; a wrong read rescales every module.
+#   * `gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})`
+#     — with the reentrant implementation nothing propagates to the per-layer
+#     lambdas, because the backbone is frozen and no input requires grad. The
+#     fit then reports the initialisation as its result.
+
+torch>=2.4
+transformers>=4.44
+peft>=0.11
+accelerate>=0.33
+huggingface_hub>=0.24
+pyarrow>=15.0
+numpy>=1.26
