@@ -382,8 +382,12 @@ the 24 layers --- 48 scalars, which does require gradient descent. The two-scala
 model is the special case $\lambda_L[\ell]=\lambda_L$, $\lambda_G[\ell]=\lambda_G$,
 so the per-layer fit starts from it and departs only where depth pays: whatever
 it gains is what letting $\lambda$ vary with depth is worth, and not an artefact
-of where the optimiser began. The step budget is fixed in advance, and validation
-and test are read only once it has run out. These per-layer $\lambda$, unlike the
+of where the optimiser began. The step budget is fixed in advance by a rule
+rather than by a stopping criterion: $\min(150,\max(30,3N/16))$ steps, where $N$
+is the number of blocks in the training split and $16$ the batch size in blocks,
+so the expression is three passes over that split, floored and capped. Here
+$N=366$ gives $68$ steps. Validation and test are read only once the budget has
+run out. These per-layer $\lambda$, unlike the
 global grid, are left unconstrained: since $\tau_L$ hurts the target on its own,
 a layer that wants $\lambda_L<0$ is a result, and a $[0,1]$ box would have hidden
 it. The grid's own optimum falls in the interior of that box, so its bound is
@@ -520,7 +524,7 @@ way, one parameter fitted on the same split, already recovers $-0.0118$. Adding
 the language module on top is worth a further $-0.0041$, with the same sign in
 all five chapters ($-0.0045$, $-0.0052$, $-0.0037$, $-0.0039$, $-0.0034$) and an
 interval of $[-0.0045,-0.0036]$ which, with five clusters, is essentially the
-range of those five numbers. What that figure separates is two \emph{mixtures},
+range of those five numbers. What that contrast separates is two \emph{mixtures},
 not a clean language factor and a clean genre factor: by
 Section~\ref{sec:interp} each module moves the target along its confound's axis,
 so both sides of the split are contaminated. Two scalars do not overfit: fitting them leaves the
@@ -643,17 +647,12 @@ in absolute terms still sits in the mid-frequency bins, but the contrast between
 the top bin and the rest is large and one-directional: the confound is not a
 uniform fog.
 
-\paragraph{The loss is register-specific, and there is no division of labour.}
+\paragraph{The loss is register-specific.}
 The tokens $\tau_L$ damages most are the comma and the em dash, then \tec{vi}
 (`we'), the full stop, the semicolon, then \tec{sade} (`said'), \tec{då},
 \tec{han}, \tec{mig}. Administrative Swedish has no dialogue, no first person
 and no verb of speech, and the module trained on it degrades the backbone on
-precisely the tokens that mark narrative prose. What we do \emph{not} find is
-the tidy story in which genre supplies lexis and language supplies morphology:
-both modules damage word-initial tokens by almost exactly the same amount
-($+0.025$ against $+0.024$ bpb, on 78\% of the bytes, that fraction taken from
-exact character spans rather than from the token-by-token attribution). And one
-caveat is large
+precisely the tokens that mark narrative prose. And one caveat is large
 enough to state as a result: the newline byte alone accounts for \textbf{27\% of
 the composition's entire gain} in bits, eight times the next token. More than a
 quarter of our headline number is line-break placement, which is a property of
