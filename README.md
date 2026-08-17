@@ -17,8 +17,9 @@ module takes that to `−0.016`, of which the genre module at a fitted scale
 already delivers `−0.012`; adding the language module on top is worth the
 remaining `−0.004`, with the same sign in all five chapters. What
 governs the composition is the **magnitude** of the two updates and not their
-**direction**: three probes across two different spaces recover at most a tenth
-of what scaling delivers.
+**direction**: three probes across two different spaces recover almost nothing.
+The best of them is worth `−0.0014` bpb, against the `−0.0486` that halving the
+plain sum delivers.
 
 The paper is in [`paper/paper.pdf`](paper/paper.pdf).
 
@@ -118,7 +119,7 @@ notebook.
 |---|---|
 | backbone | `BSC-LT/salamandra-2b`, 2,253,490,176 parameters, `bfloat16`, frozen |
 | adapter | LoRA, `r = 16`, `α = 32` (so `α/r = 2`), dropout 0, no bias |
-| adapted matrices | `q,k,v,o,gate,up,down_proj` of all 24 blocks — 168 matrices |
+| adapted matrices | `q,k,v,o,gate,up,down_proj` of all 24 layers — 168 matrices |
 | trainable parameters | 14,917,632 — **0.66 %** of the 2.25B total, **1.24 %** of the 1.20B outside the embeddings; promoted to fp32 |
 | optimiser | AdamW, `lr = 1e-4`, `betas = (0.9, 0.95)`, `weight_decay = 0` |
 | schedule | OneCycleLR, `max_lr = 1e-4`, `pct_start = 0.03`, cosine anneal |
@@ -136,8 +137,9 @@ notebook.
 by exhaustive grid search of step 0.2 over `[0,1]²`, refined to 0.1 in the 3×3
 neighbourhood of the winner, scored on the *whole* training split of the target
 (366 blocks, 753 kB). Validation and test are never consulted for the choice. A
-per-layer variant fits 48 scalars by gradient descent from the global optimum;
-it is reported as exploratory.
+per-layer variant fits 48 scalars by gradient descent from the global optimum,
+on a step budget of three passes over that split set in advance rather than by a
+stopping criterion; it is reported as exploratory.
 
 **Statistics.** Paired bootstrap, 10,000 resamples, resampling chapters. With
 five chapters the percentile interval is essentially the range of the five
