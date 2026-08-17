@@ -382,12 +382,9 @@ the 24 layers --- 48 scalars, which does require gradient descent. The two-scala
 model is the special case $\lambda_L[\ell]=\lambda_L$, $\lambda_G[\ell]=\lambda_G$,
 so the per-layer fit starts from it and departs only where depth pays: whatever
 it gains is what letting $\lambda$ vary with depth is worth, and not an artefact
-of where the optimiser began. The step budget is fixed in advance by a rule
-rather than by a stopping criterion: $\min(150,\max(30,3N/16))$ steps, where $N$
-is the number of blocks in the training split and $16$ the batch size in blocks,
-so the expression is three passes over that split, floored and capped. Here
-$N=366$ gives $68$ steps. Validation and test are read only once the budget has
-run out. These per-layer $\lambda$, unlike the
+of where the optimiser began. The step budget is three passes over the training
+split, set in advance rather than by a stopping criterion, and validation and
+test are read only once it has run out. These per-layer $\lambda$, unlike the
 global grid, are left unconstrained: since $\tau_L$ hurts the target on its own,
 a layer that wants $\lambda_L<0$ is a result, and a $[0,1]$ box would have hidden
 it. The grid's own optimum falls in the interior of that box, so its bound is
