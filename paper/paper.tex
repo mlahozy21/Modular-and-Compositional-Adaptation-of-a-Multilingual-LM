@@ -51,6 +51,7 @@
 \setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
 \setlength{\floatsep}{10pt plus 2pt minus 2pt}
 \setlength{\parskip}{0pt}
+\raggedbottom
 \setlength{\abovedisplayskip}{6pt}
 \setlength{\belowdisplayskip}{6pt}
 
@@ -377,9 +378,11 @@ initialised at the global optimum, so the two are nested and any gain is
 attributable to depth alone. The budget is fixed in advance rather than chosen
 by a stopping rule --- $\min(150,\max(30,3N/16))$ steps for $N$ training blocks,
 here 68 --- and validation and test are read only once it has run out, so
-nothing in the fit can have consulted them. The $\lambda$ are left unconstrained: since
-$\tau_L$ hurts the target on its own, a layer that wants $\lambda_L<0$ is a
-result, and bounding them to $[0,1]$ would have hidden it.
+nothing in the fit can have consulted them. These per-layer $\lambda$, unlike the
+global grid, are left unconstrained: since $\tau_L$ hurts the target on its own,
+a layer that wants $\lambda_L<0$ is a result, and a $[0,1]$ box would have hidden
+it. The grid's own optimum falls in the interior of that box, so its bound is
+not active there.
 
 \section{Evaluation protocol}
 \label{sec:eval}
@@ -590,13 +593,52 @@ recovers 84\% of the true count because decoding tokens in isolation loses
 leading spaces; that loss falls almost entirely on word-initial tokens, so
 comparisons across groups carry a bias we have not bounded.
 
+\begin{figure}[t]\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.97\columnwidth, height=4.6cm,
+  font=\footnotesize,
+  xlabel={position within the block}, ylabel={$\Delta$bpb vs $\theta_0$},
+  xlabel near ticks, ylabel near ticks,
+  xmin=0, xmax=504, ymin=-0.075, ymax=0.048,
+  xtick={0,126,252,378,504}, ytick={-0.06,-0.04,-0.02,0,0.02,0.04},
+  yticklabel style={/pgf/number format/fixed,
+                    /pgf/number format/precision=2},
+  tick align=outside, tick pos=left,
+  axis line style={gray!60}, tick style={gray!60},
+  grid=major, grid style={gray!20, line width=0.3pt},
+  legend style={at={(0.5,1.03)}, anchor=south, legend columns=2,
+                draw=none, fill=none, column sep=1em},
+  legend cell align=left,
+]
+\addplot[gray!70, line width=0.4pt, forget plot] coordinates {(0,0) (504,0)};
+\addplot[black, thick, mark=*, mark size=1.3pt] coordinates {
+ (31,-0.0675) (94,-0.0255) (157,-0.0174) (220,-0.0120)
+ (283,-0.0086) (346,-0.0077) (409,-0.0082) (472,-0.0043)};
+\addlegendentry{composition}
+\addplot[black!55, thick, dashed, mark=square, mark size=1.3pt,
+         mark options={solid}] coordinates {
+ (31,0.0102) (94,0.0202) (157,0.0217) (220,0.0280)
+ (283,0.0315) (346,0.0346) (409,0.0341) (472,0.0404)};
+\addlegendentry{$\tau_G$ alone}
+\end{axis}
+\end{tikzpicture}
+\caption{Per-token $\Delta$bpb against the backbone, by position within the
+512-token block, in eighths. The composition's gain is almost entirely spent in
+the first eighth --- 62\% of it is lost by the second --- while the genre module
+on its own grows steadily more damaging as context accumulates. Negative is
+better than $\theta_0$.}
+\label{fig:posicion}
+\end{figure}
+
 \paragraph{The gain lives at the cold start, and the damage where the corpus is
-thin.} The composition's gain is sixteen times larger in the first eighth of a
-block ($-0.068$ bpb) than in the last ($-0.004$): with little left context the
-model falls back on its priors, and that is what the modules supply. The genre
-module shows the same thing from the other side, nearly harmless at the start
-($+0.010$) and steadily more damaging as context accumulates ($+0.040$), which
-is what an over-scaled prior does once the evidence is in. On the frequency
+thin.} The composition's gain is concentrated in the opening of the block and
+the genre module's damage in its close (Figure~\ref{fig:posicion}): with little
+left context the model falls back on its priors, and that is what the modules
+supply; once the evidence is in, an over-scaled prior only gets in the way. The
+fall is a cliff rather than a slope --- most of the gain is gone by the second
+eighth --- so what the modules buy is a way to start, not a better model of the
+text throughout. On the frequency
 axis, $\tau_L$ costs $+0.005$ bpb on tokens its own corpus saw more than a
 thousand times and between $+0.043$ and $+0.082$ on everything else --- up to
 seventeen times more. The rate is not monotone in rarity and most of the damage
@@ -675,23 +717,30 @@ exists. For modules trained on factors this disjoint, the interference that TIES
 \cite{yadav2023} and DARE \cite{yu2024} resolve appears not to be the binding
 constraint; total displacement is.
 
+\paragraph{Direction decides the sign, magnitude decides how much.} That
+conclusion needs a bound, or it reads as though any direction would serve. We
+built an adapter with the same rank and the same per-matrix Frobenius norm as
+the fitted composition but with $B$ and $A$ drawn at random, over three seeds.
+It costs $+0.0071$ bpb where the composition gains $-0.0157$ --- a gap of
+$0.0228$ --- and the three draws fall within $0.0009$ of one another. The random
+adapter also displaces the activations by half as much, $\lVert\delta\rVert /
+\lVert h\rVert$ of $0.069$ against $0.124$, since it acts on input directions
+the model rarely visits. The control is therefore conservative twice over:
+arbitrary directions fail to help while moving the model less, and matching
+their displacement where it counts could only make them worse. Moving further
+helps when the direction is one the modules learned and hurts when it is not, so
+what the scale governs is how large a gain, not whether there is one.
+
 \section{Discussion and limitations}
 
-Three things survive. First, composition on this cell is real but it is mostly a
-statement about magnitude: two modules that individually damage the target,
-averaged or scaled down, improve it, and one module at a fitted scale recovers
-roughly seven tenths of what the pair does. Task arithmetic already tunes a
-scaling coefficient \cite{ilharco2023}; what this cell adds is a measurement of
-what the second module buys on top of it --- $-0.0041$ bpb, consistent in sign
-in all five chapters. Second, direction is not where we could find any headroom:
-three corrections built on the geometry of the updates, in two different spaces,
-buy at most a tenth of what one scalar per module buys. Third, the confound of
-Section~1 is not a caveat here but the dominant effect, visible four times over:
-in both modules hurting their own target cell, in the language
-module's damage concentrating on the punctuation and function words of dialogue,
-in that damage almost vanishing on the vocabulary its own corpus knows, and in
-each module displacing the target along its confound's axis rather than its
-own.
+Two things survive. Task arithmetic already tunes a scaling coefficient
+\cite{ilharco2023}; what this cell adds is a measurement of what a second module
+buys once the first is already scaled --- $-0.0041$ bpb, consistent in sign in
+all five chapters --- and of how little is left to gain from the geometry once
+it is. And the confound of Section~1 is not a caveat here but the dominant
+effect: both modules hurt the very cell they were built to serve, the language
+module's damage lands on the punctuation and function words of dialogue, and
+each module displaces the target along its confound's axis rather than its own.
 
 \paragraph{Limitations.} \emph{Everything here is translated text}: DGT is a
 translation memory and \tec{opus\_books} novels with their translations, so the
