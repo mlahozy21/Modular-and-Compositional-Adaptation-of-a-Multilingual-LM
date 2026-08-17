@@ -520,17 +520,10 @@ way, one parameter fitted on the same split, already recovers $-0.0118$. Adding
 the language module on top is worth a further $-0.0041$, with the same sign in
 all five chapters ($-0.0045$, $-0.0052$, $-0.0037$, $-0.0039$, $-0.0034$) and an
 interval of $[-0.0045,-0.0036]$ which, with five clusters, is essentially the
-range of those five numbers. The attribution depends on the order one decomposes
-in and we report both: crediting genre first leaves the language module worth
-26\% of the total, crediting language first leaves genre worth 67\%. The two do
-not add to one because the modules are sub-additive --- worth $0.0172$
-separately against $0.0159$ together --- so neither ordering alone is the
-answer. Averaging each module's marginal contribution over both orderings, which
-for two players is the Shapley value, gives \textbf{30\% to the language module
-and 70\% to the genre one}. These are shares between two \emph{mixtures}, not
-between a clean language factor and a clean genre factor: by
+range of those five numbers. What that contrast separates is two \emph{mixtures},
+not a clean language factor and a clean genre factor: by
 Section~\ref{sec:interp} each module moves the target along its confound's axis,
-so what the split divides is contaminated on both sides. Two scalars do not overfit: fitting them leaves the
+so both sides of the split are contaminated. Two scalars do not overfit: fitting them leaves the
 validation--test gap at $+0.0327$, no wider than the $+0.0351$ of the untouched
 backbone. We read nothing into the
 optimum's symmetry --- the training surface is flat to within $0.0001$ bpb over
