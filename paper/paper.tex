@@ -219,13 +219,14 @@ Qwen3 \cite{qwen3}, a 32\% gap.
 \subsection{Modular architecture}
 
 We use LoRA \cite{hu2022}: for each adapted matrix $W$, $W$ is frozen and a
-low-rank update $\Delta W = (\alpha/r)BA$ is learned, with $B$ initialised to
-zero so that training starts exactly at the backbone. A module is thus fully
+low-rank update $\Delta W = sBA$ is learned, with scaling $s=\alpha/r$ and $B$
+initialised to zero so that training starts exactly at the backbone. We write
+$d$ for the output dimension of the matrix being adapted. A module is thus fully
 described by one displacement $\Delta W$ per matrix. We adapt all seven
-projection matrices of every block (\tec{q}, \tec{k}, \tec{v}, \tec{o},
+projection matrices of every layer (\tec{q}, \tec{k}, \tec{v}, \tec{o},
 \tec{gate}, \tec{up}, \tec{down}) with $r=16$ and $\alpha=2r$ --- 14{,}917{,}632
 trainable parameters. That is 0.66\% of the model's 2.25B, but the more
-informative figure is 1.24\% of the 1.20B that sit in the transformer blocks:
+informative figure is 1.24\% of the 1.20B that sit in the transformer layers:
 Salamandra's 256k vocabulary puts the remaining 1.05B, 47\% of the model, in the
 input and output embedding matrices, which we do not adapt.
 
@@ -368,11 +369,11 @@ the experiment is meant to detect.
 
 Estimation is by exhaustive search on a grid of step $0.2$ over $[0,1]^2$,
 refined to $0.1$ in the $3\times3$ neighbourhood of the winner, scored on the
-\emph{whole} training split (366 blocks, 753 kB). Validation and test are never
+\emph{whole} training split: 366 blocks of 512 tokens, 753 kB. Validation and test are never
 consulted for the choice.
 
 We also fit a per-layer variant, $\lambda_L[\ell],\lambda_G[\ell]$ for each of
-the 24 blocks --- 48 scalars, which does require gradient descent. It is
+the 24 layers --- 48 scalars, which does require gradient descent. It is
 initialised at the global optimum, so the two are nested and any gain is
 attributable to depth alone. The budget is fixed in advance rather than chosen
 by a stopping rule --- $\min(150,\max(30,3N/16))$ steps for $N$ training blocks,
@@ -534,7 +535,7 @@ $\lambda\in[0.2,0.4]^2$.
 \begin{axis}[
   width=\columnwidth, height=5.2cm,
   font=\footnotesize,
-  xlabel={transformer block}, ylabel={fitted $\lambda$},
+  xlabel={transformer layer}, ylabel={fitted $\lambda$},
   xlabel near ticks, ylabel near ticks,
   xmin=-0.6, xmax=23.6, ymin=0.10, ymax=0.50,
   xtick={0,4,8,12,16,20,23}, ytick={0.1,0.2,0.3,0.4,0.5},
@@ -571,7 +572,7 @@ Forty-eight free parameters on one seed: the shape is reported as exploratory.}
 \paragraph{The two modules separate by depth.} The per-layer fit improves test
 by a further $-0.0019$, and the two profiles come out inverted
 (Figure~\ref{fig:profundidad}): the language module is wanted at the two
-terminal blocks --- adjacent to the embedding matrix and the output vocabulary
+terminal layers --- adjacent to the embedding matrix and the output vocabulary
 --- and the genre module in the interior. The surface properties of a language
 live next to the embeddings and the output vocabulary, and the interior is where
 the more abstract, style-like structure lives. The window is not one we chose:
@@ -673,15 +674,20 @@ measurement; the other two are interventions, and are reported by what they buy.
 cannot explain the scale.} The null here is not the one of
 Section~\ref{sec:comp}: principal-angle cosines are singular values with chance
 at $\sqrt{r/d}$, whereas these carry a sign and average \emph{zero} for
-independent pushes. Over 2{,}048 vectors per layer the mean cosine between
-$\delta_L$ and $\delta_G$ is $+0.132$, against a scale of $1/\sqrt{d}=0.022$ for
-a single random cosine --- six times larger, and far outside what sampling noise
-could produce. So the two modules push the activations in substantially the same
-direction while writing into near-orthogonal weight coordinates. But a cosine of
-$0.132$ predicts a per-module scale of $1/(1+c)=0.88$, and the fitted optimum is
-$(0.3,0.3)$: over $c\in[0,1]$ the predicted scale never falls below one half,
-and reaching three tenths would need $c=2.33$. Whatever forces
-$\lambda$ down is not the double-counting the geometric account posits.
+independent pushes. Write $\delta_L$ for the displacement a module produces in
+the hidden states --- $h(\tau_L)-h(\theta_0)$ at the same input --- and
+$\delta_G$ for the other. Over 2{,}048 vectors per layer their mean cosine $c$
+is $+0.132$, against a scale of $1/\sqrt{2048}=0.022$ for a single random cosine
+in the width of the residual stream: six times larger, and far outside what
+sampling noise could produce. So the two modules push the activations in substantially the same
+direction while writing into near-orthogonal weight coordinates. That alignment
+implies a scale. The projection of $\lambda(\delta_L+\delta_G)$ onto $\delta_L$
+is $\lambda\lVert\delta\rVert(1+c)$, so the $\lambda$ that keeps the shared part
+from being counted twice --- the one the double-counting account calls for --- is
+$1/(1+c)$, here $0.88$. The fitted optimum is $(0.3,0.3)$: over $c\in[0,1]$ the
+predicted scale never falls below one half, and reaching three tenths would need
+$c=2.33$. Whatever forces $\lambda$ down is not the double-counting the
+geometric account posits.
 
 \paragraph{The confound is a measurable direction --- and it is the only thing
 the axes see.} We build two axes from backbone centroids with a single factor
