@@ -85,8 +85,7 @@ target by itself, and their plain sum is worse than doing nothing --- and yet
 averaging them helps, with no target data at all. What governs the composition
 turns out to be the \emph{magnitude} of the two updates rather than their
 \emph{direction}: three probes across two different spaces recover almost
-nothing, while one fitted scalar per module does the work, which suggests that
-interference-resolution merging addresses a problem this regime does not have.
+nothing, while one fitted scalar per module does the work.
 \end{aclabstract}
 
 \section{Introduction}
@@ -414,14 +413,13 @@ the comparisons are paired and we bootstrap them with 10{,}000 resamples
 \emph{The resampling unit is the chapter.} The target is one work in three
 segmentations, so the blocks carrying a given chapter are three renderings of
 the same text and not three independent observations. Treating them as
-independent would inflate the sample from five chapters to 126 blocks; it
-narrows the intervals by a factor of about $1.6$, on an independence that does
-not exist. We report only the chapter-level intervals.
+independent would inflate the sample from five chapters to the blocks that carry
+them; it narrows the intervals by a factor of about $1.6$, on an independence
+that does not exist. We report only the chapter-level intervals.
 
 \emph{Five clusters bound what any interval can say.} Resampling five chapters
-with replacement admits only $\binom{9}{5}=126$ distinct outcomes --- a
-coincidence of arithmetic with the block count above, and unrelated to it --- so
-the percentile interval is, to a good approximation, the range of the five
+with replacement admits only $\binom{9}{5}=126$ distinct outcomes, so the
+percentile interval is, to a good approximation, the range of the five
 per-chapter differences. We therefore quote those five values wherever a
 contrast carries weight, and read the agreement of their signs as what actually
 supports it: five out of five in the same direction is $p=0.031$ under a
@@ -476,9 +474,9 @@ per-layer                                 & 48 & ---    & \textbf{1.0869} \\
 estimated on target data; every fitted row is selected on the training split and
 reported on test. The two single-module rows are the controls that matter: the
 gap between each of them and the two-scalar row is what the \emph{other} module
-is worth once this one has been scaled. The two dashes are by design --- the
-uniform average fits nothing, and the per-layer variant spends a step budget
-fixed in advance --- so neither consults a training score.}
+is worth once this one has been scaled. Dashes are by design: the uniform
+average fits nothing, and the per-layer variant spends a step budget fixed in
+advance, so neither consults a training score.}
 \label{tab:sup}
 \end{table}
 
@@ -625,9 +623,8 @@ comparisons across groups carry a bias we have not bounded.
 \end{tikzpicture}
 \caption{Per-token $\Delta$bpb against the backbone, by position within the
 512-token block, in eighths. The composition's gain is almost entirely spent in
-the first eighth --- 62\% of it is lost by the second --- while the genre module
-on its own grows steadily more damaging as context accumulates. Negative is
-better than $\theta_0$.}
+the first eighth, while the genre module on its own grows steadily more damaging
+as context accumulates. Negative is better than $\theta_0$.}
 \label{fig:posicion}
 \end{figure}
 
@@ -636,7 +633,7 @@ thin.} The composition's gain is concentrated in the opening of the block and
 the genre module's damage in its close (Figure~\ref{fig:posicion}): with little
 left context the model falls back on its priors, and that is what the modules
 supply; once the evidence is in, an over-scaled prior only gets in the way. The
-fall is a cliff rather than a slope --- most of the gain is gone by the second
+fall is a cliff rather than a slope --- 62\% of the gain is gone by the second
 eighth --- so what the modules buy is a way to start, not a better model of the
 text throughout. On the frequency
 axis, $\tau_L$ costs $+0.005$ bpb on tokens its own corpus saw more than a
@@ -710,39 +707,13 @@ against the fitted $\lambda$, not the plain sum; we also fixed the variant to
 report in advance rather than choose among the four we ran, though choosing the
 best on test would not change the figure. The reason it fails is in the same
 decomposition: the plane accounts for 2.1\% of $\lVert\delta\rVert^2$ on average
-and at most 7.4\%, so there is almost nothing to remove. A sharper probe would
-raise that fraction; what this establishes is that the correction available
-within the plane we could build is nil, not that no directional correction
-exists. For modules trained on factors this disjoint, the interference that TIES
-\cite{yadav2023} and DARE \cite{yu2024} resolve appears not to be the binding
-constraint; total displacement is.
+and at most 7.4\%, so there is almost nothing to remove. For a directional
+correction to pay here, a probe would have to reach far more of the displacement
+than ours did; that is a statement about our axes, not about the geometry.
 
-\paragraph{Direction decides the sign, magnitude decides how much.} That
-conclusion needs a bound, or it reads as though any direction would serve. We
-built an adapter with the same rank and the same per-matrix Frobenius norm as
-the fitted composition but with $B$ and $A$ drawn at random, over three seeds.
-It costs $+0.0071$ bpb where the composition gains $-0.0157$ --- a gap of
-$0.0228$ --- and the three draws fall within $0.0009$ of one another. The random
-adapter also displaces the activations by half as much, $\lVert\delta\rVert /
-\lVert h\rVert$ of $0.069$ against $0.124$, since it acts on input directions
-the model rarely visits. The control is therefore conservative twice over:
-arbitrary directions fail to help while moving the model less, and matching
-their displacement where it counts could only make them worse. Moving further
-helps when the direction is one the modules learned and hurts when it is not, so
-what the scale governs is how large a gain, not whether there is one.
+\section{Limitations}
 
-\section{Discussion and limitations}
-
-Two things survive. Task arithmetic already tunes a scaling coefficient
-\cite{ilharco2023}; what this cell adds is a measurement of what a second module
-buys once the first is already scaled --- $-0.0041$ bpb, consistent in sign in
-all five chapters --- and of how little is left to gain from the geometry once
-it is. And the confound of Section~1 is not a caveat here but the dominant
-effect: both modules hurt the very cell they were built to serve, the language
-module's damage lands on the punctuation and function words of dialogue, and
-each module displaces the target along its confound's axis rather than its own.
-
-\paragraph{Limitations.} \emph{Everything here is translated text}: DGT is a
+\emph{Everything here is translated text}: DGT is a
 translation memory and \tec{opus\_books} novels with their translations, so the
 target and both modules are translations, and these two datasets cannot separate
 Swedish literary text from translated Swedish. \emph{One work, three times}: the
@@ -750,9 +721,9 @@ findings speak about one novel, with the consequences for sample size and for
 segmentation already given in Sections~\ref{sec:eval} and~\ref{sec:perfil}. \emph{The modules are not
 compute-matched}: 48.6M words of genre against 11.1M of language, a factor of
 $4.4$, so wherever the language module contributes little we cannot separate
-``this factor carries less'' from ``this module saw less text''. \emph{No norm-matched control}: we claim total
-displacement governs the composition but never measured it, in state space, for
-the scaled single-module systems --- one forward pass. \emph{No
+``this factor carries less'' from ``this module saw less text''. \emph{No norm-matched control}: we claim total displacement governs the
+composition but never measured it, in state space, for the scaled single-module
+systems --- one forward pass. \emph{No
 direct-adaptation reference}: Section~\ref{sec:sup} argues only that such a run
 can obscure the effect, which is a reason not to substitute it for the
 composition and not a reason to omit it; as a normaliser we would reject it
@@ -798,11 +769,6 @@ MAD-X: An Adapter-Based Framework for Multi-Task Cross-Lingual Transfer.
 \bibitem{wortsman2022} M. Wortsman, G. Ilharco, S. Y. Gadre, et al. 2022. Model
 soups: averaging weights of multiple fine-tuned models improves accuracy without
 increasing inference time. \emph{ICML}.
-\bibitem{yadav2023} P. Yadav, D. Tam, L. Choshen, et al. 2023. TIES-Merging:
-Resolving Interference When Merging Models. \emph{NeurIPS}.
-\bibitem{yu2024} L. Yu, B. Yu, H. Yu, et al. 2024. Language Models are
-Super Mario: Absorbing Abilities from Homologous Models as a Free Lunch.
-\emph{ICML}.
 \end{thebibliography}
 
 \end{document}
